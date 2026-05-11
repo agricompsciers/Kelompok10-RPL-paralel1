@@ -1,38 +1,67 @@
-require('dotenv').config(); 
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
+
+const contactRoutes = require('./routes/contact');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
+
+// ===============================
+// CONFIG
+// ===============================
+
 const PORT = process.env.PORT || 5000;
-
-app.use(cors());
-app.use(express.json());
-
 const MONGO_URI = process.env.MONGO_URI;
 
-if (!MONGO_URI) {
-  console.error("ERROR: MONGO_URI tidak ditemukan di file .env!");
-  process.exit(1);
-}
+// ===============================
+// MIDDLEWARE
+// ===============================
 
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Berhasil terhubung ke MongoDB Atlas (DB1)'))
-  .catch((err) => {
-    console.error('Gagal terhubung ke MongoDB Atlas:');
-    console.error(err.message);
-  });
+app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Server Medha Nusantara sedang berjalan...');
-});
+app.use(express.json());
 
-const adminRoutes = require('./routes/adminRoutes');
+// ===============================
+// ROUTES
+// ===============================
+
+app.use('/api/contact', contactRoutes);
 
 app.use('/api/admin', adminRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server aktif di port ${PORT}`);
-  console.log(`Koneksi database menggunakan: ${MONGO_URI.split('@')[1]}`); 
+// ===============================
+// HEALTH CHECK
+// ===============================
+
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Backend berjalan dengan baik'
+  });
 });
+
+// ===============================
+// DATABASE CONNECTION
+// ===============================
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+
+    console.log('MongoDB terhubung');
+
+    app.listen(PORT, () => {
+
+      console.log(`Server berjalan di http://localhost:${PORT}`);
+
+    });
+
+  })
+  .catch((err) => {
+
+    console.error('Gagal terhubung ke MongoDB');
+    console.error(err.message);
+
+  });
