@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  /* Medha Nusantara Custom Colors */
+  --color-primary: #1b4324;
+  --color-cream: #fdfbf7;
+  --color-card: #ffffff;
+  --color-muted-foreground: #64748b;
+}

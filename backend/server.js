@@ -1,75 +1,67 @@
-// // =============================================
-// // server.js - Entry point aplikasi backend
-// // Medha Nusantara Contact Form API
-// // =============================================
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const cors = require('cors');
-// const contactRoutes = require('./routes/contact');
-
-// const app = express();
-// const PORT = process.env.PORT || 5000;
-// const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/medha_nusantara';
-
-// // ── Middleware ──────────────────────────────
-// app.use(cors({
-//   origin: 'http://localhost:3000', // Ganti dengan URL frontend React kamu
-//   methods: ['GET', 'POST'],
-//   allowedHeaders: ['Content-Type'],
-// }));
-
-// app.use(express.json());
-
-// // ── Routes ──────────────────────────────────
-// app.use('/api/contact', contactRoutes);
-
-// // Health check
-// app.get('/', (req, res) => {
-//   res.json({ message: 'Medha Nusantara API berjalan ✅' });
-// });
-
-// // ── Koneksi MongoDB & Start Server ──────────
-// mongoose
-//   .connect(MONGO_URI)
-//   .then(() => {
-//     console.log('✅ Terhubung ke MongoDB');
-//     app.listen(PORT, () => console.log(`🚀 Server berjalan di http://localhost:${PORT}`));
-//   })
-//   .catch((err) => {
-//     console.error('❌ Gagal konek MongoDB:', err.message);
-//     process.exit(1);
-//   });
-
-const express = require("express");
-const cors = require("cors");
+const contactRoutes = require('./routes/contact');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
+// ===============================
+// CONFIG
+// ===============================
+
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
+
+// ===============================
+// MIDDLEWARE
+// ===============================
+
 app.use(cors());
+
 app.use(express.json());
 
-let contacts = [];
+// ===============================
+// ROUTES
+// ===============================
 
-app.post("/contact", (req, res) => {
+app.use('/api/contact', contactRoutes);
 
-  const data = req.body;
+app.use('/api/admin', adminRoutes);
 
-  contacts.push(data);
+// ===============================
+// HEALTH CHECK
+// ===============================
 
-  console.log("DATA MASUK:");
-  console.log(data);
-
+app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: "Contact berhasil disimpan"
+    message: 'Backend berjalan dengan baik'
   });
 });
 
-app.get("/contacts", (req, res) => {
-  res.json(contacts);
-});
+// ===============================
+// DATABASE CONNECTION
+// ===============================
 
-app.listen(5000, () => {
-  console.log("Server berjalan di http://localhost:5000");
-});
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+
+    console.log('MongoDB terhubung');
+
+    app.listen(PORT, () => {
+
+      console.log(`Server berjalan di http://localhost:${PORT}`);
+
+    });
+
+  })
+  .catch((err) => {
+
+    console.error('Gagal terhubung ke MongoDB');
+    console.error(err.message);
+
+  });
