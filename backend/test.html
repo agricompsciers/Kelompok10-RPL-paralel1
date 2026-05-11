@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medha Nusantara – Contact Form Test</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; background: #f9f7f2; min-height: 100vh; padding: 60px 24px; }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    .eyebrow { text-align: center; font-size: 11px; letter-spacing: .2em; color: #888; margin-bottom: 8px; font-family: sans-serif; }
+    h1 { text-align: center; font-size: 42px; font-weight: 700; margin-bottom: 48px; }
+    .layout { display: flex; gap: 40px; flex-wrap: wrap; }
+    .form-section { flex: 1; min-width: 280px; }
+    .field { margin-bottom: 28px; }
+    label { display: block; font-size: 11px; letter-spacing: .15em; color: #666; margin-bottom: 8px; font-family: sans-serif; }
+    input, textarea {
+      width: 100%; border: none; border-bottom: 1px solid #ccc;
+      padding: 8px 0; font-size: 16px; background: transparent;
+      outline: none; font-family: Georgia, serif;
+    }
+    input:focus, textarea:focus { border-bottom-color: #1a3a2a; }
+    textarea { resize: vertical; min-height: 100px; }
+    .err { color: #c0392b; font-size: 12px; margin-top: 4px; min-height: 16px; font-family: sans-serif; }
+    .btn {
+      background: #1a3a2a; color: #fff; border: none;
+      padding: 14px 28px; font-size: 16px; border-radius: 4px;
+      cursor: pointer; font-family: Georgia, serif; margin-top: 8px;
+    }
+    .btn:disabled { opacity: .6; cursor: not-allowed; }
+    .status { padding: 12px 16px; border-radius: 6px; font-size: 14px; margin-top: 16px; font-family: sans-serif; display: none; }
+    .s-success { background: #d4edda; color: #155724; }
+    .s-error   { background: #f8d7da; color: #721c24; }
+    .s-loading { background: #e2e3e5; color: #383d41; }
+
+    /* Info box */
+    .info-box { flex: 1; min-width: 280px; background: #f0ece3; border-radius: 8px; padding: 24px; }
+    .map-ph { background: #ddd8cc; height: 240px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 48px; margin-bottom: 20px; }
+    .ci-row { display: flex; justify-content: space-between; gap: 12px; }
+    .ci { text-align: center; font-family: sans-serif; }
+    .ci-icon { font-size: 20px; }
+    .ci-label { font-size: 10px; letter-spacing: .1em; color: #888; margin: 6px 0 2px; }
+    .ci-val { font-size: 13px; font-weight: 600; }
+
+    /* Log */
+    .log-section { margin-top: 40px; border-top: 1px solid #ddd; padding-top: 24px; }
+    .log-title { font-size: 12px; font-weight: 600; color: #666; margin-bottom: 8px; font-family: sans-serif; letter-spacing: .05em; }
+    .log-box {
+      background: #1e1e1e; color: #d4d4d4; border-radius: 6px;
+      padding: 16px; font-family: monospace; font-size: 12px;
+      white-space: pre-wrap; word-break: break-all; min-height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">CONTACTS</p>
+    <h1>Let's talk.</h1>
+
+    <div class="layout">
+      <!-- Form -->
+      <div class="form-section">
+        <div class="field">
+          <label>NAME</label>
+          <input id="f-name" type="text" placeholder="Budi Santoso">
+          <p class="err" id="e-name"></p>
+        </div>
+        <div class="field">
+          <label>EMAIL</label>
+          <input id="f-email" type="email" placeholder="budi@gmail.com">
+          <p class="err" id="e-email"></p>
+        </div>
+        <div class="field">
+          <label>PHONE</label>
+          <input id="f-phone" type="tel" placeholder="08123456789" inputmode="numeric">
+          <p class="err" id="e-phone"></p>
+        </div>
+        <div class="field">
+          <label>MESSAGE</label>
+          <textarea id="f-msg" placeholder="Tulis pesan minimal 10 karakter..."></textarea>
+          <p class="err" id="e-msg"></p>
+        </div>
+        <button class="btn" id="btn-send" onclick="handleSubmit()">Send message</button>
+        <div class="status" id="status-box"></div>
+      </div>
+
+      <!-- Info -->
+      <div class="info-box">
+        <div class="map-ph">📍</div>
+        <div class="ci-row">
+          <div class="ci">
+            <div class="ci-icon">✉️</div>
+            <p class="ci-label">EMAIL</p>
+            <p class="ci-val">hello@medha.co</p>
+          </div>
+          <div class="ci">
+            <div class="ci-icon">📍</div>
+            <p class="ci-label">ADDRESS</p>
+            <p class="ci-val">Jakarta, ID</p>
+          </div>
+          <div class="ci">
+            <div class="ci-icon">📞</div>
+            <p class="ci-label">PHONE</p>
+            <p class="ci-val">+62 21 0000</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div class="log-section">
+      <p class="log-title">▶ LOG RESPONS BACKEND (localhost:5000)</p>
+      <div class="log-box" id="log">Belum ada request. Isi form lalu klik "Send message".</div>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // Blokir non-angka di field phone secara real-time
+    $('f-phone').addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+    });
+
+    function clearErrors() {
+      ['e-name','e-email','e-phone','e-msg'].forEach(id => $(id).textContent = '');
+    }
+
+    function validate() {
+      const name  = $('f-name').value.trim();
+      const email = $('f-email').value.trim();
+      const phone = $('f-phone').value.trim();
+      const msg   = $('f-msg').value.trim();
+      let ok = true;
+
+      if (name.length < 2) {
+        $('e-name').textContent = 'Nama minimal 2 karakter'; ok = false;
+      }
+      if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email)) {
+        $('e-email').textContent = 'Email harus menggunakan @gmail.com'; ok = false;
+      }
+      if (!/^\d{9,15}$/.test(phone)) {
+        $('e-phone').textContent = 'Nomor telepon hanya angka (9–15 digit)'; ok = false;
+      }
+      if (msg.length < 10) {
+        $('e-msg').textContent = 'Pesan minimal 10 karakter'; ok = false;
+      }
+      return ok;
+    }
+
+    function showStatus(cls, msg) {
+      const el = $('status-box');
+      el.className = 'status ' + cls;
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    async function handleSubmit() {
+      clearErrors();
+      $('status-box').style.display = 'none';
+      if (!validate()) return;
+
+      const body = {
+        name:    $('f-name').value.trim(),
+        email:   $('f-email').value.trim(),
+        phone:   $('f-phone').value.trim(),
+        message: $('f-msg').value.trim(),
+      };
+
+      $('btn-send').disabled = true;
+      $('btn-send').textContent = 'Mengirim...';
+      showStatus('s-loading', 'Menghubungi backend...');
+      $('log').textContent = 'Mengirim POST ke http://localhost:5000/api/contact...\n\nPayload:\n' + JSON.stringify(body, null, 2);
+
+      try {
+        const res  = await fetch('http://localhost:5000/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showStatus('s-success', data.message);
+          ['f-name','f-email','f-phone','f-msg'].forEach(id => $(id).value = '');
+          $('log').textContent = '✅ SUKSES (HTTP ' + res.status + ')\n\n' + JSON.stringify(data, null, 2);
+        } else {
+          const errMsg = data.errors ? data.errors.join(', ') : data.message;
+          showStatus('s-error', errMsg);
+          $('log').textContent = '❌ GAGAL VALIDASI (HTTP ' + res.status + ')\n\n' + JSON.stringify(data, null, 2);
+        }
+      } catch (err) {
+        showStatus('s-error', 'Tidak dapat terhubung ke backend. Pastikan server berjalan.');
+        $('log').textContent =
+          '❌ KONEKSI GAGAL\n\nError: ' + err.message +
+          '\n\nCek:\n1. nodemon / node server.js sudah jalan\n2. MongoDB aktif (mongod)\n3. Backend di http://localhost:5000';
+      } finally {
+        $('btn-send').disabled = false;
+        $('btn-send').textContent = 'Send message';
+      }
+    }
+  </script>
+</body>
+</html>
