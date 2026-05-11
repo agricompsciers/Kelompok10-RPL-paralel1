@@ -29,8 +29,10 @@ app.get('/', (req, res) => {
 });
 
 const adminRoutes = require('./routes/adminRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 app.use('/api/admin', adminRoutes);
+app.use('/api/products', productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server aktif di port ${PORT}`);
