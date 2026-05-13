@@ -6,7 +6,7 @@ const nav = [
   { to: "/about", label: "About Us" },
   { to: "/services", label: "Services" },
   { to: "/commodities", label: "Commodities" },
-  { to: "/contact", label: "Contact" },
+  { to: "/contacts", label: "Contacts" },
 ];
 
 const Navbar = () => {
