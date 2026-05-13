@@ -42,7 +42,7 @@ const Navbar = () => {
             to="/login"
             className="hidden sm:inline-flex h-9 items-center rounded-md bg-white text-primary px-4 text-sm font-medium hover:bg-cream transition-colors"
           >
-            Sign In
+            Admin Sign In
           </Link>
           <button className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-white/10 transition-colors">
             <Search className="h-4 w-4" />

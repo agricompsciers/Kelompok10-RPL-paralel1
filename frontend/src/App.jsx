@@ -1,47 +1,46 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// 1. Import your Layout Components (The "TV Frame")
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+// --- LAYOUTS & PROTECTIONS ---
+import PublicLayout from './components/PublicLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
-// 2. Import your Finished Pages (The "Shows")
-import Home from './pages/Home';
-import AboutUs from './pages/About';
-import Services from './pages/Services';
-import AdminDashboard from './pages/AdminDashboard';
+// --- PUBLIC PAGES ---
+// (Assuming you have a Home page. If not, just comment it out!)
+import Home from './pages/Home'; 
 import Commodities from './pages/Commodities';
-import Contacts from './pages/Contacts';
+import Contacts from './pages/Contacts'; // <-- Updated to Contacts with an 's'
+
+// --- ADMIN PAGES ---
 import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
     <BrowserRouter>
-      
-      {/* The top frame that stays on every page */}
-      <Navbar /> 
-      
-      {/* The dynamic screen area */}
-      <main className="min-h-[80vh]">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/services" element={<Services />} />
-          
-          {/* Routes waiting for your groupmates */}
-          <Route path="/commodities" element={<Commodities />} /> 
-          <Route path="/contact" element={<Contacts />} /> 
-          <Route path="/login" element={<Login />} /> 
-          
-          {/* Your isolated Admin Route */}
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </main>
+      <Routes>
+        
+        {/* ZONE 1: THE PUBLIC WEBSITE (Has Navbar & Footer) */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} /> 
+          <Route path="/commodities" element={<Commodities />} />
+          <Route path="/contacts" element={<Contacts />} /> {/* <-- Updated URL and Component */}
+        </Route>
 
-      {/* The bottom frame that stays on every page */}
-      <Footer />
+        {/* ZONE 2: THE LOGIN VAULT (Blank screen with just the form) */}
+        <Route path="/login" element={<Login />} />
 
+        {/* ZONE 3: THE SECURE ADMIN DASHBOARD (Has Sidebar, No public UI) */}
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+      </Routes>
     </BrowserRouter>
   );
 }
