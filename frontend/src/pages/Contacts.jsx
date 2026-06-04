@@ -25,7 +25,7 @@ const Contacts = () => {
     // LATER: This is where you send the data to your backend so the Admin can see it
     
     try {
-      await fetch('http://localhost:5000/api/contacts', {
+      await fetch('https://medha-nusantara-app.vercel.app/api/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

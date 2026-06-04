@@ -17,7 +17,7 @@ const CommoditiesPage = () => {
   useEffect(() => {
     const fetchCommodities = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch('https://medha-nusantara-app.vercel.app/api/products');
         const data = await response.json();
         
         // Save the real database items to state

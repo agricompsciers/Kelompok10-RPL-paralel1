@@ -11,7 +11,7 @@ const ProductsManager = () => {
   // 1. INITIAL FETCH (READ)
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch('https://medha-nusantara-app.vercel.app/api/products');
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -27,7 +27,7 @@ const ProductsManager = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch('https://medha-nusantara-app.vercel.app/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -50,7 +50,7 @@ const ProductsManager = () => {
     if (!window.confirm("Are you sure you want to delete this commodity?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
+      const response = await fetch(`https://medha-nusantara-app.vercel.app/api/products/${id}`, { method: 'DELETE' });
       if (response.ok) fetchProducts();
     } catch (error) {
       console.error("Failed to delete", error);
