@@ -10,6 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home'; 
 import Commodities from './pages/Commodities';
 import Contacts from './pages/Contacts'; // <-- Updated to Contacts with an 's'
+import Services from './pages/Services';
+import About from './pages/About';
 
 // --- ADMIN PAGES ---
 import Login from './pages/Login';
@@ -25,6 +27,8 @@ function App() {
           <Route path="/" element={<Home />} /> 
           <Route path="/commodities" element={<Commodities />} />
           <Route path="/contacts" element={<Contacts />} /> {/* <-- Updated URL and Component */}
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
         </Route>
 
         {/* ZONE 2: THE LOGIN VAULT (Blank screen with just the form) */}

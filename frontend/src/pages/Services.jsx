@@ -3,9 +3,13 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 // Placeholder images for the three service pillars
-const tradingImg = "https://images.unsplash.com/photo-1611926653458-09294b3142bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; 
-const supplyImg = "https://images.unsplash.com/photo-1586528116311-ad8ed7c80a71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; 
+//const tradingImg = "https://images.unsplash.com/photo-1611926653458-09294b3142bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; 
+//const supplyImg = "https://images.unsplash.com/photo-1586528116311-ad8ed7c80a71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; 
 const partnershipImg = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; 
+
+import tradingImg from '../assets/trdingpic.jpeg';
+import supplyImg from '../assets/supchainpic.jpeg';
+
 
 const services = [
   { img: tradingImg, title: "Trading", desc: "Spot and forward contracts across major Indonesian commodities, with transparent pricing and dependable execution." },

@@ -24,8 +24,8 @@ const getProductById = async (req, res) => {
 // 3. CREATE PRODUCT (Create)
 const createProduct = async (req, res) => {
     try {
-        const { name, price, description, imageUrl } = req.body;
-        const newProduct = new Commodity({ name, price, description, imageUrl });
+        const { name, price, description, imageUrl, category } = req.body;
+        const newProduct = new Commodity({ name, price, description, imageUrl, category });
         
         const savedProduct = await newProduct.save();
         res.status(201).json(savedProduct);

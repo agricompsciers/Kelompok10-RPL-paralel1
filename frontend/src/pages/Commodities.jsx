@@ -13,11 +13,10 @@ const CommoditiesPage = () => {
 
   const filters = ["Coffee", "Cocoa", "Spices", "Coconut", "Rubber", "Palm"];
 
-  // 2. THE REAL BACKEND CONNECTION
+  // 2. BACKEND CONNECTION
   useEffect(() => {
     const fetchCommodities = async () => {
       try {
-        // Fetching directly from your groupmate's CRUD API
         const response = await fetch('http://localhost:5000/api/products');
         const data = await response.json();
         
@@ -33,10 +32,9 @@ const CommoditiesPage = () => {
     fetchCommodities();
   }, []);
 
-  // 3. DYNAMIC FILTERING LOGIC
-  // (Added a safety check 'i.tags &&' so it doesn't crash since the DB doesn't have tags yet)
+  // 3. DYNAMIC FILTERING LOGIC 
   const visible = active.length 
-    ? commodities.filter((i) => i.tags && i.tags.some((t) => active.includes(t))) 
+    ? commodities.filter((i) => i.category && active.includes(i.category)) 
     : commodities;
 
   const toggle = (f) => setActive((a) => (a.includes(f) ? a.filter((x) => x !== f) : [...a, f]));

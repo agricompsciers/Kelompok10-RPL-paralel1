@@ -8,7 +8,7 @@ const MessagesViewer = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/messages');
+        const response = await fetch('http://localhost:5000/api/contacts');
         const data = await response.json();
         
         console.log("🔍 RADAR DETECTED THIS FROM BACKEND:", data);

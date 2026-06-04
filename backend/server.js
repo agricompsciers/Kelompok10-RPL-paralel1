@@ -41,7 +41,7 @@ const productsRoutes = require('./routes/productsRoutes');
 app.use('/api/products', productsRoutes);
 
 const contactsRoutes = require('./routes/contactsRoutes');
-app.use('/api/messages', contactsRoutes);
+app.use('/api/contacts', contactsRoutes);
 // (Note: I ignored his 'adminRoutes' import for now because your login handles the admin entry perfectly).
 
 app.listen(PORT, () => {

@@ -4,7 +4,7 @@ const Contacts = require('../models/Contacts');
 const submitMessage = async (req, res) => {
     try {
         const { name, email, phone, message } = req.body;
-        const newMessage = new Contact({ name, email, phone, message });
+        const newMessage = new Contacts({ name, email, phone, message });
         
         await newMessage.save();
         res.status(201).json({ success: true, message: "Message sent successfully!" });
@@ -17,7 +17,7 @@ const submitMessage = async (req, res) => {
 const getMessages = async (req, res) => {
     try {
         // .sort({ createdAt: -1 }) puts the newest messages at the top!
-        const messages = await Contact.find().sort({ createdAt: -1 });
+        const messages = await Contacts.find().sort({ createdAt: -1 });
         res.status(200).json(messages);
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 
-const Contact = () => {
+const Contacts = () => {
   // 1. STATE MANAGEMENT (The Form Data)
   const [formData, setFormData] = useState({
     name: "",
@@ -23,9 +23,9 @@ const Contact = () => {
     setStatus("submitting");
 
     // LATER: This is where you send the data to your backend so the Admin can see it
-    /*
+    
     try {
-      await fetch('http://localhost:5000/api/leads', {
+      await fetch('http://localhost:5000/api/contacts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -36,17 +36,6 @@ const Contact = () => {
       console.error("Failed to send message", error);
       setStatus("idle");
     }
-    */
-
-    // FOR NOW: Fake a network request so the button works
-    console.log("Submitting to database:", formData);
-    setTimeout(() => {
-      setStatus("success");
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      
-      // Reset success message after 3 seconds
-      setTimeout(() => setStatus("idle"), 3000);
-    }, 800);
   };
 
   return (
@@ -148,4 +137,4 @@ const Contact = () => {
   );
 }
 
-export default Contact;
+export default Contacts;

@@ -4,9 +4,9 @@ import { Trash2 } from 'lucide-react'; // Make sure lucide-react is installed!
 const ProductsManager = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // State for the "Add New" form
-  const [formData, setFormData] = useState({ name: '', description: '', price: '', imageUrl: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', price: '', imageUrl: '', category: '' });
 
   // 1. INITIAL FETCH (READ)
   const fetchProducts = async () => {
@@ -32,13 +32,13 @@ const ProductsManager = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          price: Number(formData.price) // Make sure price goes to DB as a number!
+          price: Number(formData.price)
         })
       });
-      
+
       if (response.ok) {
-        setFormData({ name: '', description: '', price: '', imageUrl: '' }); // Clear form
-        fetchProducts(); // Refresh the list!
+        setFormData({ name: '', description: '', price: '', imageUrl: '' });
+        fetchProducts();
       }
     } catch (error) {
       console.error("Failed to add product", error);
@@ -48,10 +48,10 @@ const ProductsManager = () => {
   // 3. DELETE FUNCTION
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this commodity?")) return;
-    
+
     try {
       const response = await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
-      if (response.ok) fetchProducts(); // Refresh the list!
+      if (response.ok) fetchProducts();
     } catch (error) {
       console.error("Failed to delete", error);
     }
@@ -66,10 +66,24 @@ const ProductsManager = () => {
         <div className="bg-cream p-6 rounded-lg border border-gray-200">
           <h2 className="text-lg font-bold mb-4 font-display">Add New Commodity</h2>
           <form onSubmit={handleAddProduct} className="space-y-4">
-            <input required type="text" placeholder="Name (e.g. Gayo Arabica)" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full p-2 text-sm border rounded" />
-            <input required type="number" placeholder="Price (USD)" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full p-2 text-sm border rounded" />
-            <textarea required placeholder="Description (Origin, Grade, etc)" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full p-2 text-sm border rounded h-24" />
-            <input type="text" placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="w-full p-2 text-sm border rounded" />
+            <input required type="text" placeholder="Name (e.g. Gayo Arabica)" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full p-2 text-sm border rounded" />
+            <input required type="number" placeholder="Price (USD)" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} className="w-full p-2 text-sm border rounded" />
+            <textarea required placeholder="Description (Origin, Grade, etc)" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full p-2 text-sm border rounded h-24" />
+            <select
+              required
+              value={formData.category}
+              onChange={e => setFormData({ ...formData, category: e.target.value })}
+              className="w-full p-2 text-sm border border-gray-300 rounded bg-white text-gray-700"
+            >
+              <option value="" disabled>Select a Category...</option>
+              <option value="Coffee">Coffee</option>
+              <option value="Cocoa">Cocoa</option>
+              <option value="Spices">Spices</option>
+              <option value="Coconut">Coconut</option>
+              <option value="Rubber">Rubber</option>
+              <option value="Palm">Palm</option>
+            </select>
+            <input type="text" placeholder="Image URL" value={formData.imageUrl} onChange={e => setFormData({ ...formData, imageUrl: e.target.value })} className="w-full p-2 text-sm border rounded" />
             <button type="submit" className="w-full bg-primary text-white py-2 rounded text-sm font-bold hover:opacity-90">Save Product</button>
           </form>
         </div>
